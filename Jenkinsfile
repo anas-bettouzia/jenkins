@@ -1,19 +1,13 @@
 pipeline {
     agent any
-    tools {
-        jdk 'JAVA_HOME'
-        maven 'M2_HOME'
-    }
     stages {
-        stage('GIT') {
-            steps {
-                git branch: 'master', url: 'https://github.com/anas-bettouzia/jenkins.git'
-            }
-        }
-        stage('Compile Stage') {
-            steps {
-                sh 'mvn clean compile'
+    stage('MVN SONARQUBR') {
+        steps {
+            withSonarQubeEnv(installationName: 'sq1') {
+                sh './mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
             }
         }
     }
+}
+
 }
